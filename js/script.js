@@ -68,6 +68,7 @@ const selectElement = document.querySelector('.format');
 const isbn = document.querySelector('.isbn');
 const narrator = document.querySelector('.narrator');
 const booksUl = document.querySelector('.physical-books-list')
+const audioBooksUl = document.querySelector('.audio-books-list');
 
 const displayPhysicalBooksContainer = document.querySelector('.display-physical-books');
 const displayAudioBooksContainer = document.querySelector('.display-audio-books');
@@ -108,6 +109,11 @@ bookForm.addEventListener('submit', (e) =>{
 renderPhysticalBooksButton.addEventListener('click', () => {
 	UI.activeTab = 'physical';
 	UI.renderBooks(books);
+})
+
+renderAudioBooksButton.addEventListener('click', () => {
+	UI.activeTab = 'audio';
+	UI.renderAudioBooks(audioBooks);
 })
 
 
@@ -151,6 +157,7 @@ class UI {
 	static renderBooks(books){
 		displayAudioBooksContainer.style.display = 'none';
 		displayPhysicalBooksContainer.style.display = 'block';
+		booksUl.textContent = '';
 
 		if(UI.activeTab === 'physical'){
 			books.forEach((book) => {
@@ -168,10 +175,45 @@ class UI {
 				renderedIsbn.textContent = book.isbn;
 				deleteButton.textContent = 'Delete';
 
+				liRow.classList.add('physical-books-row');
+				deleteButton.classList.add('delete-button');
+
 				booksUl.append(liRow);
 				liRow.append(renderedTitle, renderedAuthor, renderedFormat, renderedIsbn, deleteButtonContainer);
 				deleteButtonContainer.append(deleteButton);
 			
+			});
+		}
+	}
+///---------------------------------
+
+	static renderAudioBooks(audioBooks){
+		audioBooksUl.textContent = '';
+		displayPhysicalBooksContainer.style.display = 'none';
+		displayAudioBooksContainer.style.display = 'block';
+
+		if(UI.activeTab === 'audio'){
+			audioBooks.forEach(audioBook => {
+				const liRow = document.createElement('li');
+				const renderedTitle = document.createElement('span');
+				const renderedAuthor = document.createElement('span');
+				const renderedFormat = document.createElement('span');
+				const renderedNarrator = document.createElement('span');
+				const deleteButtonContainer = document.createElement('span');
+				const deleteButton = document.createElement('button');
+
+				renderedTitle.textContent = audioBook.title;
+				renderedAuthor.textContent = audioBook.author;
+				renderedFormat.textContent = audioBook.format;
+				renderedNarrator.textContent = audioBook.narrator;
+				deleteButton.textContent = 'Delete';
+
+				liRow.classList.add('audio-books-row');
+				deleteButton.classList.add('delete-button');
+
+				audioBooksUl.append(liRow);
+				liRow.append(renderedTitle, renderedAuthor, renderedFormat, renderedNarrator, deleteButtonContainer);
+				deleteButtonContainer.append(deleteButton);
 			});
 		}
 	}
