@@ -67,6 +67,13 @@ const author = document.querySelector('.author');
 const selectElement = document.querySelector('.format');
 const isbn = document.querySelector('.isbn');
 const narrator = document.querySelector('.narrator');
+const booksUl = document.querySelector('.physical-books-list')
+
+const displayPhysicalBooksContainer = document.querySelector('.display-physical-books');
+const displayAudioBooksContainer = document.querySelector('.display-audio-books');
+
+const renderPhysticalBooksButton = document.querySelector('.render-physical-book-button');
+const renderAudioBooksButton = document.querySelector('.render-audio-book-button');
 
 
 
@@ -96,7 +103,12 @@ bookForm.addEventListener('submit', (e) =>{
 	console.log(newBook);
 	console.log(books);
 	console.log(audioBooks);
-}) 
+});
+
+renderPhysticalBooksButton.addEventListener('click', () => {
+	UI.activeTab = 'physical';
+	UI.renderBooks(books);
+})
 
 
 // DECLARING THE BOOK CLASS
@@ -127,5 +139,40 @@ class AudioBook extends Book {
 		super(title, author, format);
 		this.narrator = narrator;
 		this.ID = Date.now();
+	}
+}
+
+
+
+// DECLARE THE UI CLASS
+
+class UI {
+	static activeTab = 'physical';
+	static renderBooks(books){
+		displayAudioBooksContainer.style.display = 'none';
+		displayPhysicalBooksContainer.style.display = 'block';
+
+		if(UI.activeTab === 'physical'){
+			books.forEach((book) => {
+				const liRow = document.createElement('li');
+				const renderedTitle = document.createElement('span');
+				const renderedAuthor = document.createElement('span');
+				const renderedFormat = document.createElement('span');
+				const renderedIsbn = document.createElement('span');
+				const deleteButtonContainer = document.createElement('span');
+				const deleteButton = document.createElement('button');
+
+				renderedTitle.textContent = book.title;
+				renderedAuthor.textContent = book.author;
+				renderedFormat.textContent = book.format;
+				renderedIsbn.textContent = book.isbn;
+				deleteButton.textContent = 'Delete';
+
+				booksUl.append(liRow);
+				liRow.append(renderedTitle, renderedAuthor, renderedFormat, renderedIsbn, deleteButtonContainer);
+				deleteButtonContainer.append(deleteButton);
+			
+			});
+		}
 	}
 }
